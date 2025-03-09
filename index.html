@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eye-Tracking</title>
     
-    <!-- Link to Google Fonts (Gugi) -->
+   
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gugi&display=swap" rel="stylesheet">
@@ -46,7 +46,7 @@
             background-color: red;
             border-radius: 50%;
             cursor: pointer;
-            position: absolute; /* Set position absolute to control the placement */
+            position: absolute;
         }
 
         #calibration-instructions {
@@ -97,27 +97,27 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* Modal Styles */
+        
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 100; /* Sit on top */
+            display: none; 
+            position: fixed;
+            z-index: 100; 
             left: 0;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            padding-top: 60px; /* Place content 60px from the top */
+            width: 100%; 
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
         }
 
         .modal-content {
             background-color: #fefefe;
-            margin: 5% auto; /* 15% from the top and centered */
+            margin: 5% auto; 
             padding: 20px;
             border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
+            width: 80%; 
         }
 
         .close {
@@ -151,7 +151,6 @@
 </head>
 <body>
 
-    <!-- Calibration Screen -->
     <div id="calibration-screen">
         <div id="calibration-instructions">Click on the red circles to calibrate</div>
         <div id="calibration-points">
@@ -164,7 +163,6 @@
         <div id="success-message">Calibration Successful!</div>
     </div>
 
-    <!-- Main Screen with Eye-Tracking Sections -->
     <div id="main-screen">
         <div class="section" id="section1">Section 1</div>
         <div class="section" id="section2">Section 2</div>
@@ -178,7 +176,7 @@
 
     <button id="show-statistics-button">Show Statistics</button>
 
-    <!-- Modal for Statistics -->
+
     <div id="statistics-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -199,14 +197,14 @@
 
         let calibrationClicks = 0;
         let pointClickCounts = {};
-        let focusDurations = {}; // Store focus durations for each section
-        let longestFocusDurations = {}; // Store longest focus durations for each section
-        let totalFocusDuration = 0; // Store total focus duration
-        let totalFocusCount = 0; // Store total focus count for mean calculation
-        let lastFocusTime = 0; // Store last time the focus was detected
+        let focusDurations = {}; 
+        let longestFocusDurations = {}; 
+        let totalFocusDuration = 0; 
+        let totalFocusCount = 0; 
+        let lastFocusTime
         let points = {}
 
-        // Function to set up calibration
+       
         function setupCalibration() {
             const calibrationPoints = document.querySelectorAll('.calibration-point');
             calibrationPoints.forEach((point, index) => {
@@ -231,7 +229,7 @@
             });
         }
 
-        // Function to update point color based on the number of clicks
+      
         function updatePointColor(point, clickCount) {
             const colors = ['orange', 'yellow', 'yellowgreen', 'green', 'blue'];
             if (clickCount <= 5) {
@@ -239,16 +237,8 @@
             }
         }
 
-        // Function to show success message
-        function showSuccessMessage() {
-            const successMessage = document.getElementById('success-message');
-            successMessage.style.display = 'block';
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 2000); // Hide after 2 seconds
-        }
 
-        // Function to start WebGazer
+    
         function startWebGazer() {
             webgazer.setRegression('ridge')
                 .setGazeListener((data) => {
@@ -271,7 +261,7 @@
                 }).begin();
         }
 
-        // Function to get the section based on coordinates
+       
         function getSectionByCoordinates(x, y) {
             const sections = document.querySelectorAll('.section');
             for (const section of sections) {
@@ -283,7 +273,7 @@
             return null;
         }
 
-        // Function to highlight the focused section
+        
         function highlightSection(sectionId) {
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => {
@@ -294,7 +284,6 @@
             lastFocusTime = new Date().getTime();
         }
 
-        // Function to update the focus duration for a section
         function updateFocusDuration(sectionId) {
             if (!focusDurations[sectionId]) {
                 focusDurations[sectionId] = [];
@@ -302,13 +291,12 @@
             }
 
             const now = new Date();
-            const focusDuration = (now.getTime() - lastFocusTime) / 1000; // Duration in seconds
-
+            const focusDuration = (now.getTime() - lastFocusTime) / 1000; 
             focusDurations[sectionId].push(focusDuration);
             totalFocusDuration += focusDuration;
             totalFocusCount++;
 
-            // Update longest duration if necessary
+          
             if (focusDuration > longestFocusDurations[sectionId]) {
                 longestFocusDurations[sectionId] = focusDuration;
             }
@@ -316,7 +304,6 @@
             updateStatisticsDisplay();
         }
 
-        // Function to reset focus
         function resetFocus() {
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => {
@@ -324,31 +311,28 @@
             });
         }
 
-        // Function to update statistics display
         function updateStatisticsDisplay() {
             const meanFocusDisplay = document.getElementById('mean-focus');
             const longestDurationDisplay = document.getElementById('longest-duration');
             const totalMeanFocusDisplay = document.getElementById('total-mean-focus');
 
-            // Update mean focus per section
+       
             meanFocusDisplay.innerHTML = '<strong>Mean Focus Duration per Section:</strong><br>';
             for (const sectionId in focusDurations) {
                 const meanFocus = focusDurations[sectionId].reduce((a, b) => a + b, 0) / focusDurations[sectionId].length;
                 meanFocusDisplay.innerHTML += `${sectionId}: ${meanFocus.toFixed(2)}s<br>`;
             }
 
-            // Update longest duration per section
             longestDurationDisplay.innerHTML = '<strong>Longest Focus Duration per Section:</strong><br>';
             for (const sectionId in longestFocusDurations) {
                 longestDurationDisplay.innerHTML += `${sectionId}: ${longestFocusDurations[sectionId].toFixed(2)}s<br>`;
             }
 
-            // Update total mean focus
+            
             const totalMeanFocus = totalFocusDuration / totalFocusCount;
             totalMeanFocusDisplay.innerHTML = `<strong>Total Mean Focus Duration:</strong> ${totalMeanFocus.toFixed(2)}s`;
         }
 
-        // Detect eye twitching
       
 
         
@@ -357,45 +341,45 @@
             const btn = document.getElementById("show-statistics-button");
             const span = document.getElementsByClassName("close")[0];
 
-            // When the user clicks the button, open the modal
+         
             btn.onclick = function() {
                 modal.style.display = "block";
-                updateStatisticsDisplay(); // Update the statistics when the modal opens
+                updateStatisticsDisplay();
             }
 
-            // When the user clicks on <span> (x), close the modal
+            
             span.onclick = function() {
                 modal.style.display = "none";
             }
 
-            // When the user clicks anywhere outside of the modal, close it
+            
             window.onclick = function(event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
             }
         }
-            // Function to flash a random section yellow
+            
     function flashRandomSection() {
         const sections = document.querySelectorAll('.section');
         if (sections.length === 0) return;
 
-        // Pick a random section
+
         const randomSection = sections[Math.floor(Math.random() * sections.length)];
 
-        // Add flashing style
+   
         randomSection.style.backgroundColor = "yellow";
 
-        // Remove flashing style after 2 seconds
+   
         setTimeout(() => {
             randomSection.style.backgroundColor = "white";
-        }, 500); // Flashes for 2 seconds
+        }, 500); 
 
-        // Schedule next flash at a random interval between 3 to 7 seconds
+       
         setTimeout(flashRandomSection, Math.random() * 4000 + 3000);
     }
 
-    // Start flashing random sections
+
     flashRandomSection();
 
     </script>
