@@ -186,6 +186,9 @@
             <div id="total-mean-focus"></div>
         </div>
     </div>
+    <br><br><br><br><br>
+
+    <p id="data_values"></p>
 
     <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
     <script>
@@ -203,6 +206,7 @@
         let totalFocusCount = 0; 
         let lastFocusTime
         let points = {}
+        let xy = ""
 
        
         function setupCalibration() {
@@ -245,10 +249,18 @@
                     if (data) {
                         const x = data.x;
                         const y = data.y;
-                        
-                        
+                    
+
                         console.log(data.x);
                         console.log(data.y);
+
+                        xy = xy + data.x + ', ' + data.y + ',';
+
+                        document.getElementById('data_values').innerHTML = xy;
+
+                        
+
+
 
                         const focusedSection = getSectionByCoordinates(x, y);
                         if (focusedSection) {
