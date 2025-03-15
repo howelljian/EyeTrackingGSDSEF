@@ -95,7 +95,7 @@ for i in range(len(y_values)-3):
     greatest_diff = float('-inf')
     least_diff = float('inf')
 
-# Iterate through the data points
+
     for curr in data:
         if 400 < curr <= 800:
             cat2 += 1
@@ -106,11 +106,9 @@ for i in range(len(y_values)-3):
         elif curr > 1200:
             cat4 += 1
 
-    # Update greatest and least differences
     greatest_diff = max(greatest_diff, curr)
     least_diff = min(least_diff, curr)
 
-# Print summary
 
     
 
@@ -154,7 +152,6 @@ print("Confidence", twitch_counter*2/5)
 
 
 
-# Visualize data distribution
 plt.hist(data, bins=50, edgecolor='black', alpha=0.7)
 plt.title("Data Distribution")
 plt.xlabel("Value")
