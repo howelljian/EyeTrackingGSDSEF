@@ -180,7 +180,7 @@
         <h6 style = "font-weight: 100; font-size: 10px;" id="data_values">hi</h6>
     </div>
 
-    <button id="show-statistics-button">Show Statistics</button>
+    <button id="copy-data-button">Copy Data</button>
 
 
     <div id="statistics-modal" class="modal">
@@ -407,7 +407,12 @@
 
 
     flashRandomSection();
-
+    
+    document.getElementById("copy-data-button").addEventListener("click", function() {
+        navigator.clipboard.writeText(document.getElementById("data_values").innerText)
+            .then(() => alert("Data copied to clipboard!"))
+            .catch(err => console.error("Error copying data: ", err));
+    });
     </script>
     <script src="main.js"></script>
 
