@@ -148,7 +148,7 @@ print("Greatest Difference", greatest_diff)
 print("Least Difference", least_diff)
 print("")
 print("")
-confidence=twitch_counter*1/5
+confidence=twitch_counter*2/5
 print("Confidence", confidence)
 
 
